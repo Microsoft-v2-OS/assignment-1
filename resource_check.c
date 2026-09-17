@@ -7,18 +7,6 @@
  *   Metrik 1 = Disk usage (persen)     -> FAIL >= 90, WARN >= 75
  *   Metrik 2 = Jumlah proses berjalan  -> FAIL >= 400, WARN >= 200
  *
- * Alur kerja
- *   sysinfo.sh mengambil kedua angka mentah, lalu mengirimkannya
- *   ke program ini lewat PIPE ke stdin (bukan argumen command line).
- *   Program ini yang memutuskan status PASS, WARN, atau FAIL.
- *
- * Format keluaran, satu baris per metrik, dipisah tanda pipe
- *   NAMA|NILAI|STATUS|KETERANGAN
- *
- * Exit code = status terburuk. 0 PASS, 1 WARN, 2 FAIL.
- *
- * Kompilasi
- *   gcc -Wall -Wextra -std=c11 -o resource_check resource_check.c
  */
 
 #include <stdio.h>
