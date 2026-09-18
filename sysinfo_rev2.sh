@@ -8,6 +8,13 @@
 
 set -uo pipefail
 
+if [ -f "./generate_report.sh" ]; then
+	source ./generate_report.sh
+else
+	echo "berkas generate_report.sh tidak ditemukan "
+	exit 1
+fi
+
 KELOMPOK="B04"
 BINER_C="./resource_check"
 SUMBER_C="resource_check.c"
@@ -116,50 +123,32 @@ echo "Menghitung metrik varian C..."
 printf "%-17s : %-12s [ %s ]\n" "Disk usage" "$D_NILAI" "$D_STATUS"
 printf "%-17s : %-12s [ %s ]\n" "Proses berjalan" "$P_NILAI" "$P_STATUS"
 
-echo ""
+echo """OS|${OS_NAME}|PASS|Kernel ${KERNEL_INFO}"
+    "Users|Regular accounts|PASS|${USER_COUNT} akun"
+    "Processes|Running|PASS|${PROC_COUNT} proses berjalan"
+    "Virtualization|Hypervisor|${VIRT_FLAG}|${VIRT_STATUS}"
+    "Disk|${D_NILAI}|${D_STATUS}|${D_KET}"
+    "Proses|${P_NILAI}|${P_STATUS}|${P_KET}"
+    "Uptime|VM aktif|INFO|${UPTIME_STR}"
 echo "Fitur tambahan:"
 printf "%-17s : %s\n" "Uptime VM" "$UPTIME_STR"
 
 # ------------------------------------------------------------------------------
 # 8. Simpan seluruh hasil ke sysinfo_report.txt dalam bentuk tabel
 # ------------------------------------------------------------------------------
-baris_tabel() {
-    printf "| %-14s | %-16s | %-6s | %-25s |\n" "$1" "$2" "$3" "$4"
-}
 
-garis_tabel() {
-    echo "+----------------+------------------+--------+---------------------------+"
-}
+echo "menyimpan laporan"
 
-potong() {
-    if [ ${#1} -gt "$2" ]; then
-        echo "${1:0:$(($2-3))}..."
-    else
-        echo "$1"
-    fi
-}
+rows=(
+	"OS|${OS_NAME}|PASS|Kernel ${KERNEL_INFO}"
+	"Users|Regular accounts|PASS|${USER_COUNT} akun"
+	"Processes|Running|PASS|${PROC_COUNT} proses berjalan"
+	"Virtualization|Hypervisor|${VIRT_FLAG}|${VIRT_STATUS}"
+	"Disk|${D_NILAI}|${D_STATUS}|${D_KET}"
+	"Proses|${P_NILAI}|${P_STATUS}|${P_KET}"
+	"Uptime|VM aktif|INFO|${UPTIME_STR}"
+)
 
-echo ""
-echo "Menyimpan laporan ke ${FILE_LAPORAN}..."
-
-{
-    echo "=========================================================================="
-    echo "TUGAS 1 OS - KELOMPOK ${KELOMPOK} (Varian C)"
-    echo "Waktu pemeriksaan  $(date '+%d-%m-%Y %H.%M.%S %Z')"
-    echo "=========================================================================="
-    garis_tabel
-    baris_tabel "Check Category" "Item" "Status" "Details"
-    garis_tabel
-    baris_tabel "OS" "$(potong "$OS_NAME" 16)" "PASS" "Kernel ${KERNEL_INFO}"
-    baris_tabel "Users" "Regular accounts" "PASS" "${USER_COUNT} akun"
-    baris_tabel "Processes" "Running" "PASS" "${PROC_COUNT} proses berjalan"
-    baris_tabel "Virtualization" "Hypervisor" "$VIRT_FLAG" "$(potong "$VIRT_STATUS" 25)"
-    baris_tabel "Disk" "$D_NILAI" "$D_STATUS" "$(potong "$D_KET" 25)"
-    baris_tabel "Proses" "$P_NILAI" "$P_STATUS" "$(potong "$P_KET" 25)"
-    baris_tabel "Uptime" "VM aktif" "INFO" "$(potong "$UPTIME_STR" 25)"
-    garis_tabel
-    echo ""
-    echo "Exit code program C  ${EXIT_C}  (0 PASS, 1 WARN, 2 FAIL)"
-} > "$FILE_LAPORAN"
+generate_report_table "${KELOMPOK}" "${rows[@]}"
 
 echo "Laporan berhasil disimpan."

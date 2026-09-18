@@ -1,0 +1,14 @@
+========================================================================
+                       TUGAS 1 OS - KELOMPOK B04
+========================================================================
++----------------+------------------+--------+-------------------------+
+| Check Category | Item             | Status | Details                 |
++----------------+------------------+--------+-------------------------+
+| OS             | Ubuntu 26.04 LTS | PASS   | Kernel 7.0.0-30-generic |
+| Users          | Regular accounts | PASS   | 2 akun                  |
+| Processes      | Running          | PASS   | 118 proses berjalan     |
+| Virtualization | Hypervisor       | PASS   | Terdeteksi (VirtualBox) |
+| Disk           | 15%              | PASS   | Masih lega              |
+| Proses         | 118 proses       | PASS   | Masih wajar             |
+| Uptime         | VM aktif         | INFO   | 0 hari 0 jam 42 menit   |
++----------------+------------------+--------+-------------------------+
