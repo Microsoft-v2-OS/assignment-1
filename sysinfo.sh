@@ -123,22 +123,7 @@ echo "Menghitung metrik varian C..."
 printf "%-17s : %-12s [ %s ]\n" "Disk usage" "$D_NILAI" "$D_STATUS"
 printf "%-17s : %-12s [ %s ]\n" "Proses berjalan" "$P_NILAI" "$P_STATUS"
 
-echo """OS|${OS_NAME}|PASS|Kernel ${KERNEL_INFO}"
-    "Users|Regular accounts|PASS|${USER_COUNT} akun"
-    "Processes|Running|PASS|${PROC_COUNT} proses berjalan"
-    "Virtualization|Hypervisor|${VIRT_FLAG}|${VIRT_STATUS}"
-    "Disk|${D_NILAI}|${D_STATUS}|${D_KET}"
-    "Proses|${P_NILAI}|${P_STATUS}|${P_KET}"
-    "Uptime|VM aktif|INFO|${UPTIME_STR}"
-echo "Fitur tambahan:"
-printf "%-17s : %s\n" "Uptime VM" "$UPTIME_STR"
-
-# ------------------------------------------------------------------------------
-# 8. Simpan seluruh hasil ke sysinfo_report.txt dalam bentuk tabel
-# ------------------------------------------------------------------------------
-
-echo "menyimpan laporan"
-
+# Definisikan array terlebih dahulu
 rows=(
 	"OS|${OS_NAME}|PASS|Kernel ${KERNEL_INFO}"
 	"Users|Regular accounts|PASS|${USER_COUNT} akun"
@@ -149,6 +134,15 @@ rows=(
 	"Uptime|VM aktif|INFO|${UPTIME_STR}"
 )
 
-generate_report_table "${KELOMPOK}" "${rows[@]}"
+# Cetak seluruh isi array ke terminal
+printf '%s\n' "${rows[@]}"
 
+echo "Fitur tambahan:"
+printf "%-17s : %s\n" "Uptime VM" "$UPTIME_STR"
+
+# ------------------------------------------------------------------------------
+# 8. Simpan seluruh hasil ke sysinfo_report.txt dalam bentuk tabel
+# ------------------------------------------------------------------------------
+echo "menyimpan laporan"
+generate_report_table "${KELOMPOK}" "${rows[@]}"
 echo "Laporan berhasil disimpan."
